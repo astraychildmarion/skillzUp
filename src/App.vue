@@ -1,10 +1,9 @@
 <script setup>
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 
 const activeTab = ref('Home')
-const selectedBrief = ref(0)
 
-const tabs = ['Home', 'Jobs', 'Reverse']
+const tabs = ['Home', 'Jobs', 'Path']
 
 const jobs = [
   { icon: 'UX', title: 'Product Designer', team: 'Team Orbit', detail: 'Shape a calm, accessible interface for a climate-action tool.', tags: ['Figma', 'Research'], color: 'coral' },
@@ -12,13 +11,11 @@ const jobs = [
   { icon: 'FE', title: 'Frontend Developer', team: 'Open Table', detail: 'Bring a friendly public-data dashboard to life in Vue.', tags: ['Vue', 'Data Viz'], color: 'blue' },
 ]
 
-const briefs = [
-  { number: '01', title: 'Start with the barrier', prompt: 'What stops someone from taking the first step?', answer: 'Design the smallest possible action that still feels meaningful.' },
-  { number: '02', title: 'Remove the screen', prompt: 'Could the idea work without another app?', answer: 'Use places, objects, conversation, or ambient signals as the interface.' },
-  { number: '03', title: 'Design for the outlier', prompt: 'Who is usually left outside the happy path?', answer: 'Build around their constraint, then see how everyone benefits.' },
+const careers = [
+  { number: '01', title: 'Product Designer', percent: 30, color: 'coral', detail: 'Turn ideas into useful, human experiences.' },
+  { number: '02', title: 'Data Analyst', percent: 40, color: 'blue', detail: 'Find patterns and make evidence visible.' },
+  { number: '03', title: 'Software Developer', percent: 50, color: 'lime', detail: 'Build the systems that bring ideas to life.' },
 ]
-
-const activeBrief = computed(() => briefs[selectedBrief.value])
 
 function switchTab(tab) {
   activeTab.value = tab
@@ -57,7 +54,7 @@ function switchTab(tab) {
             <p class="hero-copy">A fast, friendly space for curious people to turn bold questions into working ideas.</p>
             <div class="hero-actions">
               <button class="primary" @click="switchTab('Jobs')">Find your team <span>→</span></button>
-              <button class="text-btn" @click="switchTab('Reverse')">Try reverse thinking <span>↘</span></button>
+              <button class="text-btn" @click="switchTab('Path')">Explore career paths <span>↘</span></button>
             </div>
           </div>
 
@@ -103,31 +100,31 @@ function switchTab(tab) {
 
       <section v-else class="page inner-page reverse-page">
         <div class="page-heading">
-          <div><div class="eyebrow"><span></span> Flip the brief</div><h1>Think in<br /><em>reverse.</em></h1></div>
-          <p>When the obvious route feels crowded, begin at the other end. Pick a prompt and turn the problem inside out.</p>
+          <div><div class="eyebrow"><span></span> Career possibilities</div><h1>Where could<br /><em>you go?</em></h1></div>
+          <p>Every journey begins at one point, then opens into different possibilities. Explore three potential career directions below.</p>
         </div>
 
-        <div class="reverse-board">
-          <div class="brief-menu" role="tablist" aria-label="Reverse prompts">
-            <button
-              v-for="(brief, index) in briefs"
-              :key="brief.number"
-              :class="{ selected: selectedBrief === index }"
-              role="tab"
-              :aria-selected="selectedBrief === index"
-              @click="selectedBrief = index"
-            >
-              <span>{{ brief.number }}</span>{{ brief.title }}<b>→</b>
-            </button>
+        <div class="career-chart" aria-label="One person branching into three possible careers">
+          <div class="start-column">
+            <div class="person-node">
+              <div class="person-icon" aria-hidden="true"><span></span></div>
+              <div><small>STARTING POINT</small><strong>You</strong><p>Your skills, interests<br />and ambitions</p></div>
+            </div>
+            <div class="start-line" aria-hidden="true"><span></span></div>
           </div>
-          <div class="brief-detail">
-            <span class="label">THE QUESTION</span>
-            <h2>{{ activeBrief.prompt }}</h2>
-            <div class="reverse-arrow">↙</div>
-            <span class="label">YOUR NEW STARTING POINT</span>
-            <p>{{ activeBrief.answer }}</p>
+
+          <div class="career-paths">
+            <article v-for="career in careers" :key="career.title" class="career-node" :class="career.color">
+              <div class="path-line" aria-hidden="true"></div>
+              <span class="career-number">{{ career.number }}</span>
+              <div class="career-copy"><small>POSSIBLE CAREER</small><h2>{{ career.title }}</h2><p>{{ career.detail }}</p></div>
+              <div class="career-score"><strong>{{ career.percent }}%</strong><span>possibility</span></div>
+              <div class="probability-track" aria-hidden="true"><span :style="{ width: career.percent + '%' }"></span></div>
+            </article>
           </div>
         </div>
+
+        <p class="chart-note"><span>✦</span> These possibilities are independent indicators, so they do not need to add up to 100%.</p>
       </section>
     </main>
 
